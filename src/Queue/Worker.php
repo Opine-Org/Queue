@@ -46,16 +46,16 @@ class Worker {
                     $this->error('Queue is not listening.');
                     exit();
                 }
-                $context = $this->queueGateway->watch($queueName)->ignore('default')->reserve();
-                $queue->delete($job);
-                $context = json_decode($job->getData());
+                $job = $this->queueGateway->watch($queueName)->ignore('default')->reserve();
+                $this->queueGateway->delete($job);
+                $context = (array)json_decode($job->getData(), true);
                 if (!isset($context['_topic'])) {
                 	$this->error('No topic: ' . json_encode($context));
                 	continue;
                 }
                 $topic = $context['_topic'];
                 unset($context['_topic']);
-                $topic->publish($topic, $context);
+                $this->topic->publish($topic, $context);
                 $memory = memory_get_usage();
                 if ($memory > 3000000) {
                     $this->error('Worker exiting due to memory limit');
