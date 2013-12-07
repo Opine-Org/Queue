@@ -33,6 +33,7 @@ class Worker {
 		$this->queueGateway = $queueGateway;
 		$this->topic = $topic;
 		$this->root = $root;
+        file_put_contents($this->root . '/../worker.pid', getmypid());
 	}
 
 	public function work ($queueName=false) {
