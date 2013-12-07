@@ -33,7 +33,12 @@ class Worker {
 		$this->queueGateway = $queueGateway;
 		$this->topic = $topic;
 		$this->root = $root;
-        file_put_contents($this->root . '/../worker.pid', getmypid());
+        $pidFile = $this->root . '/../worker.pid';
+        if (file_exists($pidFile)) {
+            $pid = trim(file_get_contents($pidFile));
+            shell_exec('kill -s 9 ' . $pid);   
+        }
+        file_put_contents($pidFile, getmypid());
 	}
 
 	public function work ($queueName=false) {
