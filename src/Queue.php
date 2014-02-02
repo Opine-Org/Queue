@@ -2,7 +2,7 @@
 /**
  * Opine\Queue
  *
- * Copyright (c)2013 Ryan Mahoney, https://github.com/virtuecenter <ryan@virtuecenter.com>
+ * Copyright (c)2013, 2014 Ryan Mahoney, https://github.com/Opine-Org <ryan@virtuecenter.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,21 +25,21 @@
 namespace Opine;
 
 class Queue {
-	private $queueGateway;
+    private $queueGateway;
     private $root;
 
-	public function __construct ($queueGateway, $root) {
-		$this->queueGateway = $queueGateway;
+    public function __construct ($queueGateway, $root) {
+        $this->queueGateway = $queueGateway;
         $this->root = $root;
-	}
+    }
 
-	public function add ($topic, array $context=[], $queueName=false) {
+    public function add ($topic, array $context=[], $queueName=false) {
         if ($queueName === false) {
             $queueName = $this->root;
         }
         $context['_topic'] = $topic;
         $this->queueGateway->
-			useTube($queueName)->
-			put(json_encode($context));
-	}
+            useTube($queueName)->
+            put(json_encode($context));
+    }
 }

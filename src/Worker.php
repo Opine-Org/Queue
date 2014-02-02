@@ -2,7 +2,7 @@
 /**
  * Opine\Worker
  *
- * Copyright (c)2013 Ryan Mahoney, https://github.com/virtuecenter <ryan@virtuecenter.com>
+ * Copyright (c)2013, 2014 Ryan Mahoney, https://github.com/Opine-Org <ryan@virtuecenter.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,26 +25,26 @@
 namespace Opine;
 
 class Worker {
-	private $queueGateway;
-	private $topic;
-	private $root;
+    private $queueGateway;
+    private $topic;
+    private $root;
 
-	public function __construct ($queueGateway, $topic, $root) {
-		$this->queueGateway = $queueGateway;
-		$this->topic = $topic;
-		$this->root = $root;
+    public function __construct ($queueGateway, $topic, $root) {
+        $this->queueGateway = $queueGateway;
+        $this->topic = $topic;
+        $this->root = $root;
         $pidFile = $this->root . '/../worker.pid';
         if (file_exists($pidFile)) {
             $pid = trim(file_get_contents($pidFile));
             shell_exec('kill -s 9 ' . $pid);   
         }
         file_put_contents($pidFile, getmypid());
-	}
+    }
 
-	public function work ($queueName=false) {
-		if ($queueName === false) {
-			$queueName = $this->root;
-		}
+    public function work ($queueName=false) {
+        if ($queueName === false) {
+            $queueName = $this->root;
+        }
         try {
             while(true) {
                 if ($this->queueGateway->getConnection()->isServiceListening() != true) {
@@ -56,8 +56,8 @@ class Worker {
                 $this->queueGateway->delete($job);
                 $context = (array)json_decode($job->getData(), true);
                 if (!isset($context['_topic'])) {
-                	$this->error('No topic: ' . json_encode($context));
-                	continue;
+                    $this->error('No topic: ' . json_encode($context));
+                    continue;
                 }
                 $topic = $context['_topic'];
                 unset($context['_topic']);
