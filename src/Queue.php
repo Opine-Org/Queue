@@ -28,7 +28,7 @@ class Queue {
     private $queueGateway;
     private $root;
 
-    public function __construct ($queueGateway, $root) {
+    public function __construct ($root, $queueGateway) {
         $this->queueGateway = $queueGateway;
         $this->root = $root;
     }

@@ -29,7 +29,7 @@ class Worker {
     private $topic;
     private $root;
 
-    public function __construct ($queueGateway, $topic, $root) {
+    public function __construct ($root, $queueGateway, $topic) {
         $this->queueGateway = $queueGateway;
         $this->topic = $topic;
         $this->root = $root;
