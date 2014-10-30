@@ -1,0 +1,10 @@
+services:
+    queueGateway: 
+        class:     'Pheanstalk_Pheanstalk'
+        arguments: ['127.0.0.1']
+    queue:
+        class:     'Opine\Queue'
+        arguments: ['%root%', '@queueGateway']
+    worker:
+        class:     'Opine\Worker'
+        arguments: ['%root%', '@queueGateway', '@topic']
