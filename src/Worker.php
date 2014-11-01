@@ -36,7 +36,7 @@ class Worker {
         $pidFile = $this->root . '/../worker.pid';
         if (file_exists($pidFile)) {
             $pid = trim(file_get_contents($pidFile));
-            shell_exec('kill -s 9 ' . $pid);   
+            @shell_exec('kill -s 9 ' . $pid);   
         }
         file_put_contents($pidFile, getmypid());
     }
@@ -53,6 +53,10 @@ class Worker {
                     exit();
                 }
                 $job = $this->queueGateway->watch($queueName)->ignore('default')->reserve();
+                if (!is_object($job)) {
+                    sleep(3);
+                    continue;
+                }
                 $this->queueGateway->delete($job);
                 $context = (array)json_decode($job->getData(), true);
                 if (!isset($context['_topic'])) {
@@ -61,9 +65,9 @@ class Worker {
                 }
                 $topic = $context['_topic'];
                 unset($context['_topic']);
-                $this->topic->publish($topic, $context);
+                $result = $this->topic->publish($topic, $context);                
                 $memory = memory_get_usage();
-                if ($memory > 3000000) {
+                if ($memory > 10000000) {
                     $this->error('Worker exiting due to memory limit');
                     exit;
                 }

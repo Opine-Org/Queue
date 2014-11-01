@@ -42,4 +42,13 @@ class Queue {
             useTube($queueName)->
             put(json_encode($context));
     }
+
+    public function peekReady ($queueName=false) {
+        if ($queueName === false) {
+            $queueName = $this->root;
+        }
+        var_dump($this->queueGateway->
+            useTube($queueName)->
+            peekReady());
+    }
 }
