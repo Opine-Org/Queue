@@ -1,27 +1,34 @@
 {
-    "name": "opine\/queue",
+    "name": "opine/queue",
     "type": "library",
-    "description": "Queue and Worker system for PHP jobs",
+    "description": "Queue and Worker services for PHP background jobs",
     "keywords": [
         "queue",
         "beanstalkd"
     ],
     "license": "MIT",
+    "minimum-stability": "dev",
     "authors": [
         {
             "name": "Ryan Mahoney",
             "email": "ryan@virtuecenter.com",
-            "homepage": "http:\/\/opine-php.org",
+            "homepage": "http://opine-php.org",
             "role": "Developer"
         }
     ],
     "require": {
-        "php": ">=5.4.0",
-        "pda\/pheanstalk": "v2.1.0"
+        "php": ">=5.5.0",
+        "pda/pheanstalk": "v2.1.0"
+    },
+    "require-dev": {
+        "opine/db": "dev-master",
+        "phpunit/phpunit": "3.7.32",
+        "opine/config": "dev-master",
+        "opine/container": "dev-master"
     },
     "autoload": {
         "psr-4": {
-            "Opine\\": "src\/"
+            "Opine\\Queue\\": "src/"
         }
     }
 }

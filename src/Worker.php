@@ -10,10 +10,10 @@
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -22,7 +22,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-namespace Opine;
+namespace Opine\Queue;
+
+use ArrayObject;
 
 class Worker {
     private $queueGateway;
@@ -36,7 +38,7 @@ class Worker {
         $pidFile = $this->root . '/../worker.pid';
         if (file_exists($pidFile)) {
             $pid = trim(file_get_contents($pidFile));
-            @shell_exec('kill -s 9 ' . $pid);   
+            @shell_exec('kill -s 9 ' . $pid);
         }
         file_put_contents($pidFile, getmypid());
     }
@@ -65,7 +67,7 @@ class Worker {
                 }
                 $topic = $context['_topic'];
                 unset($context['_topic']);
-                $result = $this->topic->publish($topic, $context);                
+                $result = $this->topic->publish($topic, new ArrayObject($context));
                 $memory = memory_get_usage();
                 if ($memory > 10000000) {
                     $this->error('Worker exiting due to memory limit');
