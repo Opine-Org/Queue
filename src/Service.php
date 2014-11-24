@@ -1,6 +1,6 @@
 <?php
 /**
- * Opine\Queue
+ * Opine\Queue\Service
  *
  * Copyright (c)2013, 2014 Ryan Mahoney, https://github.com/Opine-Org <ryan@virtuecenter.com>
  *
