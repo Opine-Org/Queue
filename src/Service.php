@@ -24,16 +24,19 @@
  */
 namespace Opine\Queue;
 
-class Service {
+class Service
+{
     private $queueGateway;
     private $root;
 
-    public function __construct ($root, $queueGateway) {
+    public function __construct($root, $queueGateway)
+    {
         $this->queueGateway = $queueGateway;
         $this->root = $root;
     }
 
-    public function add ($topic, array $context=[], $queueName=false) {
+    public function add($topic, array $context = [], $queueName = false)
+    {
         if ($queueName === false) {
             $queueName = $this->root;
         }
@@ -43,7 +46,8 @@ class Service {
             put(json_encode($context));
     }
 
-    public function peekReady ($queueName=false) {
+    public function peekReady($queueName = false)
+    {
         if ($queueName === false) {
             $queueName = $this->root;
         }

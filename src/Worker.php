@@ -26,29 +26,32 @@ namespace Opine\Queue;
 
 use ArrayObject;
 
-class Worker {
+class Worker
+{
     private $queueGateway;
     private $topic;
     private $root;
 
-    public function __construct ($root, $queueGateway, $topic) {
+    public function __construct($root, $queueGateway, $topic)
+    {
         $this->queueGateway = $queueGateway;
         $this->topic = $topic;
         $this->root = $root;
-        $pidFile = $this->root . '/../worker.pid';
+        $pidFile = $this->root.'/../worker.pid';
         if (file_exists($pidFile)) {
             $pid = trim(file_get_contents($pidFile));
-            @shell_exec('kill -s 9 ' . $pid);
+            @shell_exec('kill -s 9 '.$pid);
         }
         file_put_contents($pidFile, getmypid());
     }
 
-    public function work ($queueName=false) {
+    public function work($queueName = false)
+    {
         if ($queueName === false) {
             $queueName = $this->root;
         }
         try {
-            while(true) {
+            while (true) {
                 if ($this->queueGateway->getConnection()->isServiceListening() != true) {
                     unset($this->queueGateway);
                     $this->error('Queue is not listening.');
@@ -60,9 +63,9 @@ class Worker {
                     continue;
                 }
                 $this->queueGateway->delete($job);
-                $context = (array)json_decode($job->getData(), true);
+                $context = (array) json_decode($job->getData(), true);
                 if (!isset($context['_topic'])) {
-                    $this->error('No topic: ' . json_encode($context));
+                    $this->error('No topic: '.json_encode($context));
                     continue;
                 }
                 $topic = $context['_topic'];
@@ -76,11 +79,12 @@ class Worker {
                 usleep(10);
             }
         } catch (Exception $e) {
-            $this->error('Job exception:' . $e->getMessage());
+            $this->error('Job exception:'.$e->getMessage());
         }
     }
 
-    private function error ($message) {
-        file_put_contents('php://stderr', $message . "\n");
+    private function error($message)
+    {
+        file_put_contents('php://stderr', $message."\n");
     }
 }
