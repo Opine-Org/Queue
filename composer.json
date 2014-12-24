@@ -18,13 +18,13 @@
     ],
     "require": {
         "php": ">=5.5.0",
-        "pda/pheanstalk": "v2.1.0"
+        "pda/pheanstalk": "v2.1.0",
+        "opine/db": "dev-master",
+        "opine/config": "3.0.0",
+        "opine/container": "dev-master"
     },
     "require-dev": {
-        "opine/db": "dev-master",
-        "phpunit/phpunit": "3.7.32",
-        "opine/config": "dev-master",
-        "opine/container": "dev-master"
+        "phpunit/phpunit": "3.7.32"
     },
     "autoload": {
         "psr-4": {
