@@ -28,6 +28,5 @@
         "psr-4": {
             "Opine\\Queue\\": "src/"
         }
-    },
-    "version": "2.0.9"
+    }
 }
